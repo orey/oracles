@@ -4,9 +4,11 @@
  * Licence: GNU GPL v3
  * Date: October 2020 
  ***********************************************/
+"use strict";
+
 
 /*
- * Main random dunction
+ * Main random function
  */
 function rollDie(faces){
     return Math.floor((Math.random()*faces)+1);
@@ -62,11 +64,11 @@ function roll(combi){
     //adding pips
     let pips  = parseInt(res.length == 2 ? res[1] : "0");
     let total = acc.reduce((a,b) => a+b, 0) + pips;
-    console.info("Launching %s. Dices: %s, pips: %s. Total: %s",
+    /*console.info("> Launching %s. Dices: %s, pips: %s. Total: %s",
                  combi,
                  JSON.stringify(acc),
                  pips.toString(),
-                 total.toString());
+                 total.toString());*/
     return total;
 }
 
@@ -89,15 +91,15 @@ function testCombi(){
  */
 function createNpcCharac(charac){
     let npc = {};
-    for (obj of charac){
-        console.log(obj);
+    for (var obj of charac){
+        //console.log(obj);
         npc[obj.abbrev] = roll(obj.pattern);
     }
     return npc;
 }
 
 function chooseInList(list){
-    return list.values[roll(list.pattern)];
+    return list.values[roll(list.pattern) -1];
 }
 
 
