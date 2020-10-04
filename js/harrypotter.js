@@ -63,6 +63,67 @@ const Abbreviations = ["FOR", "CON", "TAI", "PER", "DEX", "INT", "APP", "POU"];
 
 
 /*--------------------------------------
+ * Coups de pouce et croche-pattes
+ *--------------------------------------*/
+const CoupsDePouce = { pattern: "1D10",
+                       values:  [
+                           "Allié influent",
+                           "Apprentissage inné",
+                           "Dette éternelle",
+                           "Hérédité",
+                           "Influent",
+                           "Objet de collection",
+                           "Objet magique",
+                           "Prodige",
+                           "Riche",
+                           "Sorts innés"
+                       ]};
+
+const CrochePattes = { pattern: "1D10",
+                       values:  [
+                           "Amour à sens unique",
+                           "Dénigré",
+                           "Honni",
+                           "Hybride",
+                           "Inapte",
+                           "Limitation",
+                           "Pauvre",
+                           "Phobie",
+                           "Souffre-douleur",
+                           "Trouble de l'apprentissage"
+                       ]};
+
+const SangDuSorcier = { pattern: "1D3",
+                        values:  [
+                            "Sang pur",
+                            "Sang-mêlé",
+                            "Né-moldu"
+                        ]};
+
+const Maison = { pattern: "1D4",
+                 values:  [
+                     "Gryffondor",
+                     "Poufsouffle",
+                     "Serdaigle",
+                     "Serpentard"
+                 ]};
+
+/*--------------------------------------
+ * Bonus aux dommages
+ *--------------------------------------*/
+function bonusDommages (nombre) {
+    if (nombre < 25)
+        return "0";
+    else if (nombre < 33)
+        return "+1d3";
+    else if (nombre < 41)
+        return "+1d6";
+    else
+        return "+2d6";
+}
+
+
+/*--------------------------------------
  * Utils
  *--------------------------------------*/
 
@@ -93,7 +154,7 @@ function comparePatterns(pat, ref){
             }
             else {
                 let val = Math.abs(p - r);
-                let max = Math.abs(p,r);
+                let max = Math.max(p,r);
                 if (max == 1) {
                     if (val == 1)       score = score + 5000;
                     else if (val == 2)  score = score + 500;
@@ -123,9 +184,9 @@ function scorePattern(pat){
 }
 
 
-function npcArchetype(noc) {
+function npcArchetype(npc) {
     let sortable = Object.fromEntries(
-        Object.entries(myNPC).sort(([,a],[,b]) => b-a)
+        Object.entries(npc).sort(([,a],[,b]) => b-a)
     );
     //console.log(sortable);
     let pattern = "--------";
@@ -143,6 +204,60 @@ function npcArchetype(noc) {
     console.log("You should never see this");
 }
 
+/*--------------------------------------
+ * NPC
+ *--------------------------------------*/
+class NPC {
+    /*
+     * Male is boolean
+     */
+    constructor (male){
+        //first name
+        if (male) {
+            this.male = true;
+            this.name = engine.chooseInList(names.FirstMaleNames);
+        }
+        else {
+            this.male = false;
+            this.name = engine.chooseInList(names.FirstFemaleNames);
+        }
+        //last name
+        this.surname = engine.chooseInList(names.LongFamilyNames);
+        //characteristics
+        this.npc = engine.createNpcCharac(Characteristics);
+        //archetype
+        let index = scorePattern(npcArchetype(this.npc));
+        this.archetype = Archetypes[index].name;
+        this.pdv = Math.ceil((this.npc.CON + this.npc.TAI)/2);
+        this.bonusdommages = bonusDommages(this.npc.FOR + this.npc.TAI);
+        this.idee = this.npc.INT * 5;
+        this.chance = this.npc.POU * 5;
+        this.coupdepouce = engine.chooseInList(CoupsDePouce);
+        this.crochepatte  = engine.chooseInList(CrochePattes);
+        this.sang = engine.chooseInList(SangDuSorcier);
+        this.maison = engine.chooseInList(Maison);
+    }
+
+    print() {
+        if (this.male)
+            console.log("NPC masculin : %s %s", this.name, this.surname);
+        else
+            console.log("NPC féminin : %s %s", this.name, this.surname);
+        console.log(this.npc);
+        console.log(this.archetype);
+        console.log(this.sang);
+        console.log("PDV : %d", this.pdv);
+        console.log("Bonus aux dommages : %s", this.bonusdommages);
+        console.log("Idée : %d", this.idee);
+        console.log("Pouvoir : %d", this.chance);
+        console.log("Coup de pouce : %s", this.coupdepouce);
+        console.log("Croche-patte : %s", this.crochepatte);
+        console.log("Maison : %s", this.maison);
+    }
+
+
+}
+
 
 /*--------------------------------------
  * Main test stript
@@ -151,7 +266,7 @@ function npcArchetype(noc) {
 //engine.testCombi();
 
 //create NPC from the generic method of the engine with our setup
-var myNPC = engine.createNpcCharac(Characteristics);
+/*var myNPC = engine.createNpcCharac(Characteristics);
 console.log(myNPC);
 
 let pat = npcArchetype(myNPC);
@@ -165,8 +280,17 @@ console.log("Male name: %s %s",
             engine.chooseInList(names.LongFamilyNames));
 console.log("Female name: %s %s",
             engine.chooseInList(names.FirstFemaleNames),
-            engine.chooseInList(names.LongFamilyNames));
+            engine.chooseInList(names.LongFamilyNames));*/
 
 //displayArchetypes();
 
+function test(){
+   let anpc = new NPC(true);
+    anpc.print();
+    console.log("-------------");
+    let anothernpc = new NPC(false);
+    anothernpc.print();
+}
+
+test();
 
