@@ -71,7 +71,7 @@ function getJsonFile2(url){
             myTrace("End of JSON file");
         })
         .catch((error) => {
-            MyTrace('Error:' + error);
+            myTrace('Error:' + error);
         });
 }
 
