@@ -24,7 +24,7 @@ var MAX = 1000000;
 function testRollDie(faces){
     console.log("Testing D" + faces.toString());
     var sum = 0;
-    for (i=0;i<MAX;i++){
+    for (var i=0;i<MAX;i++){
         sum += rollDie(faces);
     }
     return sum/MAX;
