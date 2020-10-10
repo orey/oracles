@@ -270,7 +270,7 @@ class NPC {
         console.log("PDV : %d", this.pdv);
         console.log("Bonus aux dommages : %s", this.bonusdommages);
         console.log("Idée : %d", this.idee);
-        console.log("Pouvoir : %d", this.chance);
+        console.log("Chance : %d", this.chance);
         console.log("Coup de pouce : %s", this.coupdepouce);
         console.log("Croche-patte : %s", this.crochepatte);
         console.log("Maison : %s", this.maison);
@@ -279,22 +279,21 @@ class NPC {
     to_HTML() {
         let fragment = "";
         if (this.male)
-            console.log("NPC masculin : %s %s", this.name, this.surname);
+            fragment += "<p>NPC masculin : " + this.name + " " + this.surname + "</p>\n";
         else
-            console.log("NPC féminin : %s %s", this.name, this.surname);
-        console.log(this.npc);
-        console.log(this.archetype);
-        console.log(this.sang);
-        console.log("PDV : %d", this.pdv);
-        console.log("Bonus aux dommages : %s", this.bonusdommages);
-        console.log("Idée : %d", this.idee);
-        console.log("Pouvoir : %d", this.chance);
-        console.log("Coup de pouce : %s", this.coupdepouce);
-        console.log("Croche-patte : %s", this.crochepatte);
-        console.log("Maison : %s", this.maison);
+            fragment += "<p>NPC féminin : " + this.name + " " + this.surname + "</p>\n";
+        fragment += "<p>" + JSON.stringify(this.npc) + "</p>\n";
+        fragment += "<p>" + this.archetype + "</p>\n";
+        fragment += "<p>" + this.ang + "</p>\n";
+        fragment += "<p>PDV : " + String(this.pdv) + "</p>\n";
+        fragment += "<p>Bonus aux dommages : " + this.bonusdommages + "</p>\n";
+        fragment += "<p>Idée : " + String(this.idee) + "</p>\n";
+        fragment += "<p>Chance : " + String(this.chance) + "</p>\n";
+        fragment += "<p>Coup de pouce : " + this.coupdepouce + "</p>\n";
+        fragment += "<p>Croche-patte : " + this.crochepatte + "</p>\n";
+        fragment += "<p>Maison : " + this.maison + "</p>\n";
+        return fragment;
     }
-
-
 }
 
 
@@ -326,9 +325,11 @@ console.log("Female name: %s %s",
 function test(){
    let anpc = new NPC(true);
     anpc.print();
+    console.log(anpc.to_HTML());
     console.log("-------------");
     let anothernpc = new NPC(false);
     anothernpc.print();
+    console.log(anothernpc.to_HTML());
 }
 
 //test();
@@ -336,6 +337,7 @@ function test(){
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         NPC,
+        test,
     }
 }
 

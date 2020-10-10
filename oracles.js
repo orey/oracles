@@ -3,6 +3,8 @@
  * Author: rey.olivier@gmail.com
  * License: GPL V3
  * Date: September 08 2020
+ * --------------
+ * Note : this code is specific to the browser
  *******************************************/
 "use strict";
 
@@ -48,8 +50,8 @@ function getBaseUrl() {
 function getJsonFile(url){
     (async () => {
         let response = await fetch(url);
-        let commits = await response.json(); // read response body and parse as JSON
-        myTrace(commits[0].name);
+        let data = await response.json(); // read response body and parse as JSON
+        return data;
     })()    
 }
 
@@ -57,13 +59,16 @@ function getJsonFile(url){
 function test(){
     //loadDependencies();
     let url2 = BASE_URL + 'names.json';
-    alert(url2);
-    // let url3 = getBaseUrl() + 'names.json';
     myTrace(url2);
-    getJsonFile(url2);
-    myTrace("D20:" + testRollDie(20).toString())
-    //let NPC = new NPC();
-    //alert("NPC name: " + NPC.name + " " + NPC.surname);
+    
+    let data = getJsonFile(url2);
+    myTrace(data[0].name);
+    
+    myTrace("Average D20 testing:" + testRollDie(20).toString())
+
+    let NPC = new NPC();
+    myTrace("NPC name: " + NPC.name + " " + NPC.surname);
+    myTrace(
     
 }
 
