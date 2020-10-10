@@ -11,7 +11,7 @@ let engine = undefined;
 let names  = undefined;
 let server = true;
 
-if (typeof require !== undefined) {
+if (typeof require !== 'undefined') {
     engine = require("./oracles-engine");
     names  = require("./names.js");
 }
