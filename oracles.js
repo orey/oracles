@@ -6,15 +6,13 @@
  *******************************************/
 "use strict";
 
-const BASE_URL = 'https://raw.githubusercontent.com/orey/oracles/master/';
+const BASE_URL =  "https://orey.github.io/oracles/";
 
-let 
 
 function myTrace(text) {
     let elem = document.getElementById('trace');
     elem.innerHTML = "<h3>Trace</h3><p>" + text + "</p>";
 }
-
 
 /*---------------------------------------
  * Function to load other JS files
@@ -68,3 +66,4 @@ function test(){
     //alert("NPC name: " + NPC.name + " " + NPC.surname);
     
 }
+
