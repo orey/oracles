@@ -284,7 +284,7 @@ class NPC {
             fragment += "<p>NPC féminin : " + this.name + " " + this.surname + "</p>\n";
         fragment += "<p>" + JSON.stringify(this.npc) + "</p>\n";
         fragment += "<p>" + this.archetype + "</p>\n";
-        fragment += "<p>" + this.ang + "</p>\n";
+        fragment += "<p>" + this.sang + "</p>\n";
         fragment += "<p>PDV : " + String(this.pdv) + "</p>\n";
         fragment += "<p>Bonus aux dommages : " + this.bonusdommages + "</p>\n";
         fragment += "<p>Idée : " + String(this.idee) + "</p>\n";
