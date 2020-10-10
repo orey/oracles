@@ -11,9 +11,13 @@
 const BASE_URL =  "https://orey.github.io/oracles/";
 
 
-function myTrace(text) {
+function myTrace(text, para=true,hr=true) {
     let elem = document.getElementById('trace');
-    elem.innerHTML = elem.innerHTML + text + "<hr/>";
+    let date = new Date().toLocaleString();
+    elem.innerHTML +=  "<p>[" +  date
+        + (para ? "] " : "]</p>")
+        + text
+        + (para ? "</p>" : "") + (hr ? "<hr>" : "");
 }
 
 /*---------------------------------------
@@ -60,19 +64,16 @@ function getJsonFile2(url){
     return fetch(url)
         .then(response => response.json)
         .then(data => {
-            myTrace('Success:' + data);
-            return data;
+            myTrace('Success');
+            for (const elem of data) {
+                myTrace("Name: " + elem.name + " " + elem.surname, true, false);
+            }
+            myTrace("End of JSON file");
         })
         .catch((error) => {
             MyTrace('Error:' + error);
         });
 }
-
-function waitForReply(url) {
-    let data = await getJsonFile2(url);
-    return data;
-}
-
 
 
 function test(){
@@ -80,15 +81,13 @@ function test(){
     let url2 = BASE_URL + 'names.json';
     myTrace(url2);
     
-    //let data = getJsonFile2(url2);
-    let data = waiForReply(url2);
-    myTrace(data[0].name);
+    getJsonFile2(url2);
     
     myTrace("Average D20 testing:" + testRollDie(20).toString())
 
     let c = new NPC();
-    myTrace("NPC name: " + c.name + " " + c.surname);
-    myTrace(c.to_HTML());
+    myTrace("NPC name: " + c.name + " " + c.surname, true, false);
+    myTrace(c.to_HTML(), false, true);
     
 }
 
