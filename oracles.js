@@ -56,13 +56,26 @@ function getJsonFile(url){
     return data;
 }
 
+function getJsonFile2(url){
+    return fetch(url)
+        .then(response => response.json)
+        .then(data => {
+            myTrace('Success:' + data);
+            return data;
+        })
+        .catch((error) => {
+            MyTrace('Error:' + error);
+        });
+}
+
+
 
 function test(){
     //loadDependencies();
     let url2 = BASE_URL + 'names.json';
     myTrace(url2);
     
-    let data = getJsonFile(url2);
+    let data = getJsonFile2(url2);
     myTrace(data[0].name);
     
     myTrace("Average D20 testing:" + testRollDie(20).toString())
