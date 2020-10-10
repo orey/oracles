@@ -6,3 +6,10 @@ git checkout master -- js/oracles-engine.js
 git checkout master -- js/names.js
 git checkout master -- js/harrypotter.js
 
+git status
+
+git commit -a -m "new version"
+
+git push origin gh-pages
+
+
