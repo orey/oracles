@@ -11,7 +11,7 @@ const BASE_URL =  "https://orey.github.io/oracles/";
 
 function myTrace(text) {
     let elem = document.getElementById('trace');
-    elem.innerHTML = "<h3>Trace</h3><p>" + text + "</p>";
+    elem.innerHTML = elem.innerHTML + text + "<hr/>";
 }
 
 /*---------------------------------------
