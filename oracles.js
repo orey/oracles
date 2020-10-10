@@ -48,11 +48,12 @@ function getBaseUrl() {
  * a JSON object
  *--------------------------------------*/
 function getJsonFile(url){
+    let data;
     (async () => {
         let response = await fetch(url);
-        let data = await response.json(); // read response body and parse as JSON
-        return data;
-    })()    
+        data = await response.json(); // read response body and parse as JSON
+    })();
+    return data;
 }
 
 
