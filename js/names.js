@@ -192,9 +192,12 @@ const LongFamilyNames = { pattern: "1D100",
 /*--------------------------------------
  * Exports
  *--------------------------------------*/
-module.exports = {
-    FirstMaleNames,
-    FirstFemaleNames,
-    FamilyNames,
-    LongFamilyNames,
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+        FirstMaleNames,
+        FirstFemaleNames,
+        FamilyNames,
+        LongFamilyNames,
+    }
 }
+

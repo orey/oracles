@@ -105,10 +105,12 @@ function chooseInList(list){
 
 /*****************************************/
 
-module.exports = { rollDie,
-						 roll,
-                   testCombi,
-                   createNpcCharac,
-                   chooseInList,
-                 };
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = { rollDie,
+		       roll,
+                       testCombi,
+                       createNpcCharac,
+                       chooseInList,
+                     }
+}
 
