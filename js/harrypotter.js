@@ -7,8 +7,29 @@
  ***********************************************/
 "use strict";
 
-let engine = require("./oracles-engine");
-let names  = require("./names.js");
+let engine = undefined;
+let names  = undefined;
+let server = true;
+
+if (typeof require !== undefined) {
+    engine = require("./oracles-engine");
+    names  = require("./names.js");
+}
+else
+{
+    //define wrappers
+    engine = {
+        chooseInList : chooseInList,
+        createNpcCharac : createNpcCharac,
+    };
+    names = {
+        FirstMaleNames : FirstMaleNames,
+        FirstFemaleNames : FirstFemaleNames,
+        FamilyNames : FamilyNames,
+        LongFamilyNames : LongFamilyNames,
+    };
+}
+
 
 /*--------------------------------------
  * Archetypes
