@@ -1,4 +1,0 @@
-# oracles
-
-Oracles for RPG
-
