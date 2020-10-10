@@ -62,7 +62,7 @@ function getJsonFile(url){
 
 function getJsonFile2(url){
     return fetch(url)
-        .then(response => response.json)
+        .then(response => response.json())
         .then(data => {
             myTrace('Success');
             for (const elem of data) {
