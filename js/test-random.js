@@ -1,11 +1,12 @@
-// Test random
+/**********************************************
+ * Oracles tests
+ * Author: rey.olivier@gmail.com
+ * Licence: GNU GPL v3
+ * Date: October 2020 
+ ***********************************************/
+"use strict";
 
-function rollDie(faces){
-    return Math.floor((Math.random()*faces)+1);
-    /*temp = Math.floor((Math.random()*faces)+1);
-    console.log(temp);
-    return temp;*/
-}
+let engine = require("./oracles-engine");
 
 var MAX = 1000000;
 
@@ -30,4 +31,4 @@ function testAll(){
 
 }
 
-
+testAll();

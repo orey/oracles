@@ -1,0 +1,8 @@
+List of files to be published
+
+index.html
+oracles.js
+js/oracles-engine.js
+js/names.js
+js/harrypotter.js
+

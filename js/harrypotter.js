@@ -255,6 +255,24 @@ class NPC {
         console.log("Maison : %s", this.maison);
     }
 
+    to_HTML() {
+        let fragment = "";
+        if (this.male)
+            console.log("NPC masculin : %s %s", this.name, this.surname);
+        else
+            console.log("NPC féminin : %s %s", this.name, this.surname);
+        console.log(this.npc);
+        console.log(this.archetype);
+        console.log(this.sang);
+        console.log("PDV : %d", this.pdv);
+        console.log("Bonus aux dommages : %s", this.bonusdommages);
+        console.log("Idée : %d", this.idee);
+        console.log("Pouvoir : %d", this.chance);
+        console.log("Coup de pouce : %s", this.coupdepouce);
+        console.log("Croche-patte : %s", this.crochepatte);
+        console.log("Maison : %s", this.maison);
+    }
+
 
 }
 
@@ -292,5 +310,11 @@ function test(){
     anothernpc.print();
 }
 
-test();
+//test();
+
+module.exports = {
+    NPC,
+}
+
+
 

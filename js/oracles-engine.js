@@ -105,7 +105,8 @@ function chooseInList(list){
 
 /*****************************************/
 
-module.exports = { roll,
+module.exports = { rollDie,
+						 roll,
                    testCombi,
                    createNpcCharac,
                    chooseInList,
