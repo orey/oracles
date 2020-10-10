@@ -68,6 +68,11 @@ function getJsonFile2(url){
         });
 }
 
+function waitForReply(url) {
+    let data = await getJsonFile2(url);
+    return data;
+}
+
 
 
 function test(){
@@ -75,7 +80,8 @@ function test(){
     let url2 = BASE_URL + 'names.json';
     myTrace(url2);
     
-    let data = getJsonFile2(url2);
+    //let data = getJsonFile2(url2);
+    let data = waiForReply(url2);
     myTrace(data[0].name);
     
     myTrace("Average D20 testing:" + testRollDie(20).toString())
