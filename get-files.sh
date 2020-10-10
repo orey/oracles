@@ -6,6 +6,7 @@ git checkout master -- js/oracles-engine.js
 git checkout master -- js/names.js
 git checkout master -- js/harrypotter.js
 git checkout master -- names.json
+git checkout master -- favicon.ico
 
 git status
 

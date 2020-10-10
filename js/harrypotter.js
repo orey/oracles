@@ -312,8 +312,10 @@ function test(){
 
 //test();
 
-module.exports = {
-    NPC,
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+        NPC,
+    }
 }
 
 
