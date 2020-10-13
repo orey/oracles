@@ -1,5 +1,5 @@
 /********************************************
- * JS utilities
+ * Main web JS entry point for oracles
  * Author: rey.olivier@gmail.com
  * License: GPL V3
  * Date: September 08 2020
