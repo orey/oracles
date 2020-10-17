@@ -234,16 +234,12 @@ class HarryPotterNPC extends engine.NPC {
      * Male is boolean
      */
     constructor (male){
-        super();
+        super(male);
         //first name
-        if (male) {
-            this.male = true;
+        if (male)
             this.name = engine.chooseInList(names.FirstMaleNames);
-        }
-        else {
-            this.male = false;
+        else
             this.name = engine.chooseInList(names.FirstFemaleNames);
-        }
         //last name
         this.surname = engine.chooseInList(names.LongFamilyNames);
         //characteristics
@@ -263,55 +259,13 @@ class HarryPotterNPC extends engine.NPC {
         };
     }
 
-    print() {
-        if (this.male)
-            console.log("NPC masculin : %s %s", this.name, this.surname);
-        else
-            console.log("NPC féminin : %s %s", this.name, this.surname);
-        console.log(this.traits);
-        for (var t in this.others)
-            console.log(t + " : " + this.others[t]);
-    }
 
-    to_HTML() {
-        let fragment = "";
-        if (this.male)
-            fragment += "<p>NPC masculin : " + this.name + " " + this.surname + "</p>\n";
-        else
-            fragment += "<p>NPC féminin : " + this.name + " " + this.surname + "</p>\n";
-        for (var t in this.traits)
-            fragment += "<p>" + t + " : " + this.traits[t] + "</p>\n";
-        for (var t in this.others)
-            fragment += "<p>" + t + " : " + this.others[t] + "</p>\n";
-        return fragment;
-    }
 }
 
 
 /*--------------------------------------
  * Main test stript
  *--------------------------------------*/
-
-//engine.testCombi();
-
-//create NPC from the generic method of the engine with our setup
-/*var myNPC = engine.createNpcCharac(Characteristics);
-console.log(myNPC);
-
-let pat = npcArchetype(myNPC);
-console.log(pat);
-let index = scorePattern(pat);
-console.log("Archetype: %s", Archetypes[index].name);
-
-
-console.log("Male name: %s %s",
-            engine.chooseInList(names.FirstMaleNames),
-            engine.chooseInList(names.LongFamilyNames));
-console.log("Female name: %s %s",
-            engine.chooseInList(names.FirstFemaleNames),
-            engine.chooseInList(names.LongFamilyNames));*/
-
-//displayArchetypes();
 
 function test(){
    let anpc = new NPC(true);
