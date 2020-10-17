@@ -4,7 +4,8 @@ Base styles
 
 body {
     background-color: AliceBlue;
-    max-width: 250px;
+    min-width: 250px;
+    max-width: 750px;
     margin-top: 10px;
     margin-bottom: 50px;
     margin-right: 20px;
@@ -20,6 +21,6 @@ h2 {
 }
 
 div.tracediv {
-    color: DarkBlue;
+    color: DarkBlue
 }
 

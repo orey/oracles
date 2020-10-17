@@ -9,26 +9,60 @@
 "use strict";
 
 class NpcView extends HTMLElement {
-  constructor() {
-    super();
-    // element created
-  }
+    constructor() {
+        super();
+        // element created
+        this._npc = undefined;
+        this._rendered = false;
+        this.shadow = this.attachShadow({mode: 'open'});
+    }
 
-  connectedCallback() {
-      // browser calls this method when the element is added to the document
-      // (can be called many times if an element is repeatedly added/removed)
-      const shadow = this.attachShadow({mode: 'open'});
-      let genre = this.getAttribute('genre');
-      let npc;
-      if (genre == "male")
-          npc = new HarryPotterNPC(true);
-      else
-          npc = new HarryPotterNPC(false);
-      let fragment = "<p>Create a " + genre +" NPC.</p>\n";
-      fragment += npc.to_HTML();
-      shadow.innerHTML = fragment;
-  }
+    connectedCallback() {
+        this.render();
+    }
+
+    get npc() {
+        return this._npc;
+    }
+
+    set npc(anpc) {
+        this._npc = anpc;
+    }
+
+    // This method was refreshing the component by changing an attribute
+    // It works but the event bus seems better
+    
+    /*  static get observedAttributes() {
+        return ['render'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        console.log("Attribute " + name + " changed.");
+        this.render();
+    }*/
+
+    render(){
+        if (this._npc == undefined)
+            // do nothing
+            return;
+        if (this._rendered) {
+            // remove
+            this.shadow.innerHTML = "<p>Removed!</p>"
+            this._rendered = false;
+        }
+        else {
+            // add
+            this.shadow.innerHTML = this._npc.to_HTML();
+            this._rendered = true;
+        }
+    }
+    
 }
 // let the browser know that <my-npc> is served by our new class
 customElements.define("my-npc", NpcView);
+
+BUS.register("my-npc-refresh", (evt) => {
+    let e = document.querySelector("my-npc");
+    e.render();
+});
 

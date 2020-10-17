@@ -88,6 +88,33 @@ function test(){
     let c = new HarryPotterNPC();
     myTrace("NPC name: " + c.name + " " + c.surname, true, false);
     myTrace(c.to_HTML(), false, true);
+
+    let e = document.querySelector("my-npc");
+    console.log(e);
+    e.npc = c;
+    //e.setAttribute("render","true");
+    BUS.fire("my-npc-refresh");
     
 }
+
+// event bus
+class EventBus {
+    constructor() {
+        this._bus = document.createElement('div');
+    }
+    
+    register(event, callback) {
+        this._bus.addEventListener(event, callback);
+    } 
+    
+    remove(event, callback) {
+        this._bus.removeEventListener(event, callback);
+    }
+
+    fire(event, detail = {}) {
+        this._bus.dispatchEvent(new CustomEvent(event, { detail }));
+    }
+}
+
+const BUS = new EventBus();
 
