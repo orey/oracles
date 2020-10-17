@@ -21,6 +21,7 @@ else
     engine = {
         chooseInList : chooseInList,
         createNpcCharac : createNpcCharac,
+        NPC : NPC,
     };
     names = {
         FirstMaleNames : FirstMaleNames,
@@ -228,11 +229,12 @@ function npcArchetype(npc) {
 /*--------------------------------------
  * NPC
  *--------------------------------------*/
-class NPC {
+class HarryPotterNPC extends engine.NPC {
     /*
      * Male is boolean
      */
     constructor (male){
+        super();
         //first name
         if (male) {
             this.male = true;
@@ -245,18 +247,20 @@ class NPC {
         //last name
         this.surname = engine.chooseInList(names.LongFamilyNames);
         //characteristics
-        this.npc = engine.createNpcCharac(Characteristics);
+        this.traits = engine.createNpcCharac(Characteristics);
         //archetype
-        let index = scorePattern(npcArchetype(this.npc));
-        this.archetype = Archetypes[index].name;
-        this.pdv = Math.ceil((this.npc.CON + this.npc.TAI)/2);
-        this.bonusdommages = bonusDommages(this.npc.FOR + this.npc.TAI);
-        this.idee = this.npc.INT * 5;
-        this.chance = this.npc.POU * 5;
-        this.coupdepouce = engine.chooseInList(CoupsDePouce);
-        this.crochepatte  = engine.chooseInList(CrochePattes);
-        this.sang = engine.chooseInList(SangDuSorcier);
-        this.maison = engine.chooseInList(Maison);
+        let index = scorePattern(npcArchetype(this.traits));
+        this.others = {
+            "Archetype"          : Archetypes[index].name,
+            "PDV"                : Math.ceil((this.traits.CON + this.traits.TAI)/2),
+            "Bonus aux dommages" : bonusDommages(this.traits.FOR + this.traits.TAI),
+            "Idée"               : this.traits.INT * 5,
+            "Chance"             : this.traits.POU * 5,
+            "Coup de pouce"      : engine.chooseInList(CoupsDePouce),
+            "Croche Patte"       : engine.chooseInList(CrochePattes),
+            "Sang"               : engine.chooseInList(SangDuSorcier),
+            "Maison"             : engine.chooseInList(Maison)
+        };
     }
 
     print() {
@@ -264,16 +268,9 @@ class NPC {
             console.log("NPC masculin : %s %s", this.name, this.surname);
         else
             console.log("NPC féminin : %s %s", this.name, this.surname);
-        console.log(this.npc);
-        console.log(this.archetype);
-        console.log(this.sang);
-        console.log("PDV : %d", this.pdv);
-        console.log("Bonus aux dommages : %s", this.bonusdommages);
-        console.log("Idée : %d", this.idee);
-        console.log("Chance : %d", this.chance);
-        console.log("Coup de pouce : %s", this.coupdepouce);
-        console.log("Croche-patte : %s", this.crochepatte);
-        console.log("Maison : %s", this.maison);
+        console.log(this.traits);
+        for (var t in this.others)
+            console.log(t + " : " + this.others[t]);
     }
 
     to_HTML() {
@@ -282,16 +279,10 @@ class NPC {
             fragment += "<p>NPC masculin : " + this.name + " " + this.surname + "</p>\n";
         else
             fragment += "<p>NPC féminin : " + this.name + " " + this.surname + "</p>\n";
-        fragment += "<p>" + JSON.stringify(this.npc) + "</p>\n";
-        fragment += "<p>" + this.archetype + "</p>\n";
-        fragment += "<p>" + this.sang + "</p>\n";
-        fragment += "<p>PDV : " + String(this.pdv) + "</p>\n";
-        fragment += "<p>Bonus aux dommages : " + this.bonusdommages + "</p>\n";
-        fragment += "<p>Idée : " + String(this.idee) + "</p>\n";
-        fragment += "<p>Chance : " + String(this.chance) + "</p>\n";
-        fragment += "<p>Coup de pouce : " + this.coupdepouce + "</p>\n";
-        fragment += "<p>Croche-patte : " + this.crochepatte + "</p>\n";
-        fragment += "<p>Maison : " + this.maison + "</p>\n";
+        for (var t in this.traits)
+            fragment += "<p>" + t + " : " + this.traits[t] + "</p>\n";
+        for (var t in this.others)
+            fragment += "<p>" + t + " : " + this.others[t] + "</p>\n";
         return fragment;
     }
 }
@@ -336,7 +327,7 @@ function test(){
 
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
-        NPC,
+        HarryPotterNPC,
         test,
     }
 }
