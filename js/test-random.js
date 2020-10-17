@@ -32,9 +32,12 @@ function testAll(){
 
     let npc1 = new hp.HarryPotterNPC(true);
     npc1.print();
+    console.log(npc1.to_HTML());
     let npc2 = new hp.HarryPotterNPC(false);
     npc2.print();
+    console.log(npc2.to_HTML());
 
 }
 
 testAll();
+

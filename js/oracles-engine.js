@@ -103,6 +103,9 @@ function chooseInList(list){
 }
 
 
+/*****************************************
+ * NPC global manipulations
+ *****************************************/
 class NPC {
     // male or female: boolean
     male = false;
@@ -120,6 +123,11 @@ class NPC {
     // array of string
     description = ["unset"];
 
+    constructor (male){
+        if (male)
+            this.male = true;
+    }
+    
     /*
      * This function is generic
      */
@@ -128,7 +136,8 @@ class NPC {
             console.log("NPC masculin : %s %s", this.name, this.surname);
         else
             console.log("NPC féminin : %s %s", this.name, this.surname);
-        console.log(this.traits);
+        for (var t in this.traits)
+            console.log(t + " : " + this.traits[t]);
         for (var t in this.others)
             console.log(t + " : " + this.others[t]);
     }
@@ -149,8 +158,6 @@ class NPC {
         return fragment;
     }
 }
-
-
 
 
 /*****************************************/
