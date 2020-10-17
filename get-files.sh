@@ -3,6 +3,7 @@
 git checkout master -- index.html
 git checkout master -- index-local.html
 git checkout master -- oracles.js
+git checkout master -- npccomponent.js
 git checkout master -- js/oracles-engine.js
 git checkout master -- js/names.js
 git checkout master -- js/harrypotter.js

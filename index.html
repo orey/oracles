@@ -3,16 +3,23 @@
   <head>
     <meta charset="utf-8">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://orey.github.io/oracles/styles.css">
+    <link rel="stylesheet" href="styles.css">
     <title>Oracles for RPG</title>
-    <script src="https://orey.github.io/oracles/js/names.js"></script>
-    <script src="https://orey.github.io/oracles/js/oracles-engine.js"></script>
-    <script src="https://orey.github.io/oracles/js/harrypotter.js"></script>
-    <script src="https://orey.github.io/oracles/oracles.js"></script>
+    <script src="js/names.js"></script>
+    <script src="js/oracles-engine.js"></script>
+    <script src="js/harrypotter.js"></script>
+    <script src="oracles.js"></script>
+    <script src="npccomponent.js"></script>    
   </head>
   <body>
     <h1>Oracles pour JDR</h1>
     <button onclick="test()">Générer un personnage</button>
+    <h2>Personnages</h2>
+    <div class="npc" id="npcs">
+      <my-npc genre="male"></my-npc>
+      <hr>
+      <my-npc genre="female"></my-npc>
+    </div>
     <h2>Trace</h2>
     <div class="tracediv" id="trace"></div>
   </body>
