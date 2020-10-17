@@ -263,28 +263,7 @@ class HarryPotterNPC extends engine.NPC {
         };
     }
 
-    print() {
-        if (this.male)
-            console.log("NPC masculin : %s %s", this.name, this.surname);
-        else
-            console.log("NPC féminin : %s %s", this.name, this.surname);
-        console.log(this.traits);
-        for (var t in this.others)
-            console.log(t + " : " + this.others[t]);
-    }
 
-    to_HTML() {
-        let fragment = "";
-        if (this.male)
-            fragment += "<p>NPC masculin : " + this.name + " " + this.surname + "</p>\n";
-        else
-            fragment += "<p>NPC féminin : " + this.name + " " + this.surname + "</p>\n";
-        for (var t in this.traits)
-            fragment += "<p>" + t + " : " + this.traits[t] + "</p>\n";
-        for (var t in this.others)
-            fragment += "<p>" + t + " : " + this.others[t] + "</p>\n";
-        return fragment;
-    }
 }
 
 

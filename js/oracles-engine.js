@@ -103,6 +103,56 @@ function chooseInList(list){
 }
 
 
+class NPC {
+    // male or female: boolean
+    male = false;
+    // string
+    name = "Jane";
+    // string
+    surname = "Doe";
+    // primary characteristics
+    // object with "charac : value"
+    maintraits = {"CHARACTERISTIC": 0};
+    // other traits 
+    // object with "other_charac : value"
+    othertraits = {"OTHER_CHARACTERISTIC": 0};
+    // descriptive traits
+    // array of string
+    description = ["unset"];
+
+    /*
+     * This function is generic
+     */
+    print() {
+        if (this.male)
+            console.log("NPC masculin : %s %s", this.name, this.surname);
+        else
+            console.log("NPC féminin : %s %s", this.name, this.surname);
+        console.log(this.traits);
+        for (var t in this.others)
+            console.log(t + " : " + this.others[t]);
+    }
+
+    /*
+     * This function is generic
+     */
+    to_HTML() {
+        let fragment = "";
+        if (this.male)
+            fragment += "<p>NPC masculin : " + this.name + " " + this.surname + "</p>\n";
+        else
+            fragment += "<p>NPC féminin : " + this.name + " " + this.surname + "</p>\n";
+        for (var t in this.traits)
+            fragment += "<p>" + t + " : " + this.traits[t] + "</p>\n";
+        for (var t in this.others)
+            fragment += "<p>" + t + " : " + this.others[t] + "</p>\n";
+        return fragment;
+    }
+}
+
+
+
+
 /*****************************************/
 
 if (typeof module !== "undefined" && module.exports) {
@@ -111,6 +161,7 @@ if (typeof module !== "undefined" && module.exports) {
                        testCombi,
                        createNpcCharac,
                        chooseInList,
+                       NPC,
                      }
 }
 

@@ -85,7 +85,7 @@ function test(){
     
     myTrace("Average D20 testing:" + testRollDie(20).toString())
 
-    let c = new NPC();
+    let c = new HarryPotterNPC();
     myTrace("NPC name: " + c.name + " " + c.surname, true, false);
     myTrace(c.to_HTML(), false, true);
     
