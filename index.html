@@ -3,13 +3,53 @@
   <head>
     <meta charset="utf-8">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1o">
     <link rel="stylesheet" href="styles.css">
     <title>Oracles for RPG</title>
     <script src="js/names.js"></script>
     <script src="js/oracles-engine.js"></script>
     <script src="js/harrypotter.js"></script>
     <script src="oracles.js"></script>
-    <script src="npccomponent.js"></script>    
+    <script src="npccomponent.js"></script>
+    <!-- =====================Template start============================= -->
+    <template id="npc-template">
+      <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* Create two equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 50%;
+            padding: 10px;
+            /* height: 300px; /* Should be removed. Only for demonstration */*/
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+      </style>
+      <div class="row">
+        <div class="column">
+          <table>
+              <tr>
+                <th>Caractéristiques</th>
+                <th>Valeur</th>
+              </tr>
+              <tr>
+                <td><slot name="charac">Default</slot></td>
+                <td><slot name="value">Default</slot></td>
+              </tr>
+          </table>
+        </div>
+        <div class="column">Column 2</div>
+      </div>
+    </template>
+    <!-- =====================Template end============================= -->
   </head>
   <body>
     <h1>Oracles pour JDR</h1>
@@ -18,6 +58,8 @@
     <div class="npc" id="npcs">
       <hr>
       <my-npc></my-npc>
+      <hr>
+      <my-npc2></my-npc2>
       <hr>
     </div>
     <h2>Trace</h2>
