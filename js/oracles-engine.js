@@ -115,13 +115,10 @@ class NPC {
     surname = "Doe";
     // primary characteristics
     // object with "charac : value"
-    maintraits = {"CHARACTERISTIC": 0};
+    traits = {"CHARACTERISTIC": 0};
     // other traits 
     // object with "other_charac : value"
-    othertraits = {"OTHER_CHARACTERISTIC": 0};
-    // descriptive traits
-    // array of string
-    description = ["unset"];
+    others = {"OTHER_CHARACTERISTIC": 0};
 
     constructor (male){
         if (male)

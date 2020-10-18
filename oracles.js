@@ -91,30 +91,17 @@ function test(){
 
     let e = document.querySelector("my-npc");
     console.log(e);
-    e.npc = c;
+    e.data = c;
     //e.setAttribute("render","true");
     BUS.fire("my-npc-refresh");
+
+    let e2 = document.querySelector("my-npc2");
+    console.log(e2);
+    e2.data = c;
+    //e.setAttribute("render","true");
+    BUS.fire("my-npc2-refresh");
+
     
 }
 
-// event bus
-class EventBus {
-    constructor() {
-        this._bus = document.createElement('div');
-    }
-    
-    register(event, callback) {
-        this._bus.addEventListener(event, callback);
-    } 
-    
-    remove(event, callback) {
-        this._bus.removeEventListener(event, callback);
-    }
-
-    fire(event, detail = {}) {
-        this._bus.dispatchEvent(new CustomEvent(event, { detail }));
-    }
-}
-
-const BUS = new EventBus();
 
