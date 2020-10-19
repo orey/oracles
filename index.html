@@ -11,48 +11,10 @@
     <script src="js/harrypotter.js"></script>
     <script src="oracles.js"></script>
     <script src="npccomponent.js"></script>
-    <!-- =====================Template start============================= -->
-    <template id="npc-template">
-      <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        /* Create two equal columns that floats next to each other */
-        .column {
-            float: left;
-            width: 50%;
-            padding: 10px;
-            /* height: 300px; /* Should be removed. Only for demonstration */*/
-        }
-
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-      </style>
-      <div class="row">
-        <div class="column">
-          <table>
-              <tr>
-                <th>Caractéristiques</th>
-                <th>Valeur</th>
-              </tr>
-              <tr>
-                <td><slot name="charac">Default</slot></td>
-                <td><slot name="value">Default</slot></td>
-              </tr>
-          </table>
-        </div>
-        <div class="column">Column 2</div>
-      </div>
-    </template>
-    <!-- =====================Template end============================= -->
-  </head>
+  <head>
   <body>
     <h1>Oracles pour JDR</h1>
+    <p><a href="https://orey.github.io/oracles">Github.io version</a></p>
     <button onclick="test()">Générer un personnage</button>
     <h2>Personnages</h2>
     <div class="npc" id="npcs">

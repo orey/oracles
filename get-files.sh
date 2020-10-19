@@ -13,7 +13,7 @@ git checkout master -- styles.css
 
 git status
 
-get add *
+add *
 
 git commit -a -m "new version"
 
