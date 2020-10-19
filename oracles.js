@@ -93,7 +93,7 @@ function test(){
     console.log(e);
     e.data = c;
     //e.setAttribute("render","true");
-    BUS.fire("my-npc-refresh");
+    //BUS.fire("my-npc-refresh");
 
     let e2 = document.querySelector("my-npc2");
     console.log(e2);
