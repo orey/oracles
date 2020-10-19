@@ -9,6 +9,7 @@
 "use strict";
 
 const DEFAULT_SHADOW = "<p>Nothing</p>";
+const REFRESH_EVENT = "_refresh";
 
 
 /*-------------------------------------------------------
@@ -48,6 +49,8 @@ class MyHTMLElement extends HTMLElement {
         this._data = undefined;
         this._shadow = this.attachShadow({mode: 'open'});
         this._rendered = false;
+        this._tagname = "";
+        this._refreshEventName = "" // this._tagname + REFRESH_EVEN
     }
 
     connectedCallback() {
@@ -59,11 +62,6 @@ class MyHTMLElement extends HTMLElement {
      * data is a javascript object.
      */
     set data(dat){
-        if ((dat == undefined) || (dat == {})) {
-            this._data = undefined;
-            this._rendered = false;
-            return;
-        }
         this._data = dat;
         this._rendered = false;
     }
@@ -86,6 +84,22 @@ class MyHTMLElement extends HTMLElement {
  * This class is a View for NPC class
  *-------------------------------------------------------*/
 class NpcView extends MyHTMLElement {
+    static TagName = "my-npc";
+    static RefreshEvent = NpcView.TagName + REFRESH_EVENT;
+
+    constructor(){
+        super();
+        BUS.register(NpcView.RefreshEvent, (evt) => {
+            let e = document.querySelector(NpcView.TagName);
+            e.render();
+        });
+    }
+
+    set data(dat){
+        this._data = dat;
+        BUS.fire(NpcView.RefreshEvent);
+    }
+    
     render(){
         if (this._data == undefined)
         {
@@ -104,12 +118,9 @@ class NpcView extends MyHTMLElement {
 }
 
 // let the browser know that <my-npc> is served by our new class
-customElements.define("my-npc", NpcView);
+customElements.define(NpcView.TagName, NpcView);
 
-BUS.register("my-npc-refresh", (evt) => {
-    let e = document.querySelector("my-npc");
-    e.render();
-});
+
 
 /*-------------------------------------------------------
  * This class is a View for NPC class
