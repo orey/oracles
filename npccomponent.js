@@ -82,6 +82,7 @@ class MyHTMLElement extends HTMLElement {
 
 /*-------------------------------------------------------
  * This class is a View for NPC class
+ * This class is not using _rendered anymore
  *-------------------------------------------------------*/
 class NpcView extends MyHTMLElement {
     static TagName = "my-npc";
@@ -104,15 +105,10 @@ class NpcView extends MyHTMLElement {
         if (this._data == undefined)
         {
             console.log("No data in view");
-            // do nothing
-            return;
-        }
-        if (this._rendered) {
-            console.log("Already rendered");
+            this._shadow.innerHTML = "";
             return;
         }
         this._shadow.innerHTML = this._data.to_HTML();
-        this._rendered = true;
     }
     
 }
