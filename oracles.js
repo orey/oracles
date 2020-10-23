@@ -103,13 +103,15 @@ function test(){
     //e.setAttribute("render","true");
     BUS.fire("my-npc2-refresh");
 
-    insertInDB(c);
+    //    insertInDB(c);
+    DB.insert(c);
     
 }
 
+let DB= new myDB("BASE", "NPCS",1,"name");
 
 window.onload = function(){
     myTrace("window.onload");
-    createDB();
+    //    createDB();
 }
 

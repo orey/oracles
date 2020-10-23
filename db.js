@@ -8,15 +8,14 @@
  *******************************************/
 "use strict";
 
-class myDB() {
-    constructor (name, version, index="") {
-        this.db = undefined;
+class myDB {
+    constructor (base, name, version, index="") {
+        this.base = base;
         this.name = name;
         this.version = version;
-        this.objectStore = undefined;
         this.index = index;
         
-        let request = window.indexedDB.open(this.name, this.version);
+        let request = window.indexedDB.open(this.base, this.version);
 
         request.onerror = function(event) {
             // Do something with request.errorCode!
@@ -26,33 +25,49 @@ class myDB() {
         request.onsuccess = function(event) {
             // Do something with request.result!
             myTrace("Success opening DB.");
-            this.db = event.target.result;
+            let db = event.target.result;
         };
 
         // This event is only implemented in recent browsers   
         request.onupgradeneeded = function(event) { 
             // Save the IDBDatabase interface
             // we'll use this.db instead
-            // var db = event.target.result;
+            let db = event.target.result;
 
             // Create an objectStore for this database
-            this.objectStore = this.db.createObjectStore(this.name,
-                                                         { keyPath: "id", autoIncrement: true });
+            let objectStore = db.createObjectStore(name,
+                                                   { keyPath: "id", autoIncrement: true });
             
-            if (this.index != "")
-                this.objectStore.createIndex(this.index, this.index, { unique: false });
-
-            this.objectStore.transaction.oncomplete = function(event) {
+            if (index != "")
+                objectStore.createIndex("by_" + index, index, { unique: false });
+            
+            myTrace("Object store created");
+            
+            objectStore.transaction.oncomplete = function(event) {
                 myTrace("Event this.objectStore.transaction.oncomplete received");
             }
         }
+        // try to record request
+        // db = request.result;
+        this.request = request;
     }
 
     insert(obj){
-        let transaction = this.db.transaction([this.name], "readwrite");
+        let db = this.request.result;
 
-        var npcsObjectStore = transaction.objectStore(this.name);
-        npcsObjectStore.add(obj);
+        /*if (db.objectStoreNames.contains(this.name))
+            myTrace("Store " + this.name + " already exists.");
+        else {
+           let store =  db.createObjectStore(this.name,
+                                             { keyPath: "id", autoIncrement: true });
+            if (index != "")
+                store.createIndex("by_" + this.index, this.index, { unique: false });
+        }*/
+        
+        let transaction = db.transaction([this.name], "readwrite");
+
+        let npcsObjectStore = transaction.objectStore(this.name);
+        npcsObjectStore.put(obj);
 
         transaction.oncomplete = function(event) {
             myTrace("Data added to store");
