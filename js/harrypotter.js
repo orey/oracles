@@ -11,13 +11,18 @@ let engine = undefined;
 let names  = undefined;
 let server = true;
 
+/*
+ * Do I really need require.js?
+ * Up to now, no, and this code runs both in the browser and in node
+ */
+
 if (typeof require !== 'undefined') {
     engine = require("./oracles-engine");
     names  = require("./names.js");
 }
 else
 {
-    //define wrappers
+    //define wrappers for web environment
     engine = {
         chooseInList : chooseInList,
         createNpcCharac : createNpcCharac,

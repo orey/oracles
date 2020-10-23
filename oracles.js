@@ -10,11 +10,13 @@
 
 const BASE_URL =  "https://orey.github.io/oracles/";
 
+const TRACE = document.getElementById('trace');
+
 
 function myTrace(text, para=true,hr=true) {
-    let elem = document.getElementById('trace');
+    //let elem = document.getElementById('trace');          
     let date = new Date().toLocaleString();
-    elem.innerHTML +=  "<p>[" +  date
+    TRACE.innerHTML +=  "<p>[" +  date
         + (para ? "] " : "]</p>")
         + text
         + (para ? "</p>" : "") + (hr ? "<hr>" : "");
@@ -101,7 +103,13 @@ function test(){
     //e.setAttribute("render","true");
     BUS.fire("my-npc2-refresh");
 
+    insertInDB(c);
     
 }
 
+
+window.onload = function(){
+    myTrace("window.onload");
+    createDB();
+}
 

@@ -1,5 +1,5 @@
 /********************************************
- * DB for NPC
+ * Wrapper for IndexedDB
  * Author: rey.olivier@gmail.com
  * License: GPL V3
  * Date: October 11 2020
@@ -8,66 +8,81 @@
  *******************************************/
 "use strict";
 
-const DB_NAME = "RPG";
-const DB_VERSION = 1;
-const DB_STORE_NAME = "NPC";
+class myDB() {
+    constructor (name, version, index="") {
+        this.db = undefined;
+        this.name = name;
+        this.version = version;
+        this.objectStore = undefined;
+        this.index = index;
+        
+        let request = window.indexedDB.open(this.name, this.version);
 
-var db;
+        request.onerror = function(event) {
+            // Do something with request.errorCode!
+            myTrace("Error opening DB. Error code = " + event.target.errorCode);
+        };
 
-function openDB() {
-    // Open in version 1
-    let request = indexedDB.open(dbName, 1);
+        request.onsuccess = function(event) {
+            // Do something with request.result!
+            myTrace("Success opening DB.");
+            this.db = event.target.result;
+        };
 
-    request.onerror = function(event) {
-        MsgBox("Error in Opening DB");
-        console.error("openDb:", event.target.errorCode);
-    };
+        // This event is only implemented in recent browsers   
+        request.onupgradeneeded = function(event) { 
+            // Save the IDBDatabase interface
+            // we'll use this.db instead
+            // var db = event.target.result;
 
-    request.onsuccess = function(event) {
-        db = this.result;
-        console.log("openDb DONE");
-    };
+            // Create an objectStore for this database
+            this.objectStore = this.db.createObjectStore(this.name,
+                                                         { keyPath: "id", autoIncrement: true });
+            
+            if (this.index != "")
+                this.objectStore.createIndex(this.index, this.index, { unique: false });
 
-    // Define the schema
-    request.onupgradeneeded = function (event) {
-        console.log("openDb.onupgradeneeded");
-        var store = event.currentTarget.result.createObjectStore(
-            DB_STORE_NAME,
-            { keyPath: 'id', autoIncrement: true });
-        //store.createIndex('biblioid', 'biblioid', { unique: true });
-        //store.createIndex('title', 'title', { unique: false });
-    };
+            this.objectStore.transaction.oncomplete = function(event) {
+                myTrace("Event this.objectStore.transaction.oncomplete received");
+            }
+        }
+    }
+
+    insert(obj){
+        let transaction = this.db.transaction([this.name], "readwrite");
+
+        var npcsObjectStore = transaction.objectStore(this.name);
+        npcsObjectStore.add(obj);
+
+        transaction.oncomplete = function(event) {
+            myTrace("Data added to store");
+        };
+
+        transaction.onerror = function(event) {
+            // Don't forget to handle errors!
+            myTrace("Error when inserting data");
+        };
+    }
+
+/*    getObjectStore(store_name, mode) {
+        var tx = db.transaction(store_name, mode);
+        return tx.objectStore(store_name);
+    }
+
+    clearObjectStore() {
+        var store = getObjectStore(DB_STORE_NAME, 'readwrite');
+        var req = store.clear();
+        req.onsuccess = function(evt) {
+            displayActionSuccess("Store cleared");
+            displayPubList(store);
+        };
+        req.onerror = function (evt) {
+            console.error("clearObjectStore:", evt.target.errorCode);
+            displayActionFailure(this.error);
+        };
+    }*/
+
 }
-
-function getObjectStore(store_name, mode) {
-    var tx = db.transaction(store_name, mode);
-    return tx.objectStore(store_name);
-}
-
-function clearObjectStore() {
-    var store = getObjectStore(DB_STORE_NAME, 'readwrite');
-    var req = store.clear();
-    req.onsuccess = function(evt) {
-        displayActionSuccess("Store cleared");
-        displayPubList(store);
-    };
-    req.onerror = function (evt) {
-        console.error("clearObjectStore:", evt.target.errorCode);
-        displayActionFailure(this.error);
-    };
-}
-
-function getBlob(key, store, success_callback) {
-    var req = store.get(key);
-    req.onsuccess = function(evt) {
-        var value = evt.target.result;
-        if (value)
-            success_callback(value.blob);
-    };
-}
-
-//reprendre ici
-
 
 
 
