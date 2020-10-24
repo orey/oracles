@@ -39,12 +39,13 @@ class IDBWrapper {
             // Save the IDBDatabase interface
             // we'll use this.db instead
             let db = event.target.result;
+            let objectStore;
 
             // Create an objectStore for this database
             if (db.objectStoreNames.contains(this.name))
                 console.log("IDBWrapper: Store " + this.name + " already exists.");
             else {
-                let objectStore = db.createObjectStore(name,
+                objectStore = db.createObjectStore(name,
                                                        { keyPath: "id", autoIncrement: true });
                 console.log("IDBWrapper: object store created");
                 if (index != "") {
