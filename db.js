@@ -8,10 +8,16 @@
  *******************************************/
 "use strict";
 
-class myDB {
+
+/*
+ * This class is a wrapper around the very strangely designed and badly documented
+ * IndexedDB. It is designed to host only one store with one index in one DB.
+ * It is autonomous and can be reused in various contexts.
+ */
+class IDBWrapper {
     constructor (base, name, version, index="") {
         this.base = base;
-        this.name = name;
+        this.name = name; // object store name
         this.version = version;
         this.index = index;
         
@@ -19,13 +25,13 @@ class myDB {
 
         request.onerror = function(event) {
             // Do something with request.errorCode!
-            myTrace("Error opening DB. Error code = " + event.target.errorCode);
+            console.error("IDBWrapper: Error opening DB. Error code = " + event.target.errorCode);
         };
 
         request.onsuccess = function(event) {
             // Do something with request.result!
-            myTrace("Success opening DB.");
-            let db = event.target.result;
+            console.log("IDBWrapper: Success opening DB.");
+            //let db = event.target.result;
         };
 
         // This event is only implemented in recent browsers   
@@ -35,34 +41,47 @@ class myDB {
             let db = event.target.result;
 
             // Create an objectStore for this database
-            let objectStore = db.createObjectStore(name,
-                                                   { keyPath: "id", autoIncrement: true });
-            
-            if (index != "")
-                objectStore.createIndex("by_" + index, index, { unique: false });
-            
-            myTrace("Object store created");
+            if (db.objectStoreNames.contains(this.name))
+                console.log("IDBWrapper: Store " + this.name + " already exists.");
+            else {
+                let objectStore = db.createObjectStore(name,
+                                                       { keyPath: "id", autoIncrement: true });
+                console.log("IDBWrapper: object store created");
+                if (index != "") {
+                    objectStore.createIndex("by_" + index, index, { unique: false });
+                    console.log("IDBWrapper: Index by_" + index + " created");
+                }
+            }
             
             objectStore.transaction.oncomplete = function(event) {
-                myTrace("Event this.objectStore.transaction.oncomplete received");
+                console.log("IDBWrapper: Event objectStore.transaction.oncomplete received");
             }
         }
-        // try to record request
-        // db = request.result;
+        // Record request object
         this.request = request;
+
+        // it is not possible to record the DB oject because it is created
+        // asynchronously and its handle only appear in events at this time.
+        // That would mean having a global variable which is bad..
+        // Later, to get the db, we can type
+        // db = request.result;
     }
 
     insert(obj){
         let db = this.request.result;
 
-        /*if (db.objectStoreNames.contains(this.name))
+        // Normally, we shouldn't need this code, except on very old browser that
+        // do not support the "onupgradeneeded" event.
+        /*
+        if (db.objectStoreNames.contains(this.name))
             myTrace("Store " + this.name + " already exists.");
         else {
            let store =  db.createObjectStore(this.name,
                                              { keyPath: "id", autoIncrement: true });
             if (index != "")
                 store.createIndex("by_" + this.index, this.index, { unique: false });
-        }*/
+        }
+        */
         
         let transaction = db.transaction([this.name], "readwrite");
 
@@ -70,32 +89,29 @@ class myDB {
         npcsObjectStore.put(obj);
 
         transaction.oncomplete = function(event) {
-            myTrace("Data added to store");
+            console.log("IDBWrapper: Data added to store");
         };
 
         transaction.onerror = function(event) {
-            // Don't forget to handle errors!
-            myTrace("Error when inserting data");
+            console.error("IDBWrapper: Error when inserting data");
         };
     }
 
-/*    getObjectStore(store_name, mode) {
-        var tx = db.transaction(store_name, mode);
-        return tx.objectStore(store_name);
-    }
-
-    clearObjectStore() {
-        var store = getObjectStore(DB_STORE_NAME, 'readwrite');
-        var req = store.clear();
-        req.onsuccess = function(evt) {
-            displayActionSuccess("Store cleared");
-            displayPubList(store);
+    /*
+     * This method clears all the records in the store
+     */
+    clearDB() {
+        let store = db.transaction([this.name], 'readwrite').objectStore(this.name);
+        let request = store.clear();
+        
+        request.onsuccess = function(event) {
+            console.log("IDBWrapper: Store cleared");
         };
+
         req.onerror = function (evt) {
-            console.error("clearObjectStore:", evt.target.errorCode);
-            displayActionFailure(this.error);
+            console.error("IDBWrapper: clearObjectStore error, code: ", evt.target.errorCode);
         };
-    }*/
+    }
 
 }
 

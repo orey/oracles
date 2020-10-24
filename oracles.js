@@ -108,7 +108,7 @@ function test(){
     
 }
 
-let DB= new myDB("BASE", "NPCS",1,"name");
+let DB= new IDBWrapper("BASE", "NPCS",1,"name");
 
 window.onload = function(){
     myTrace("window.onload");
