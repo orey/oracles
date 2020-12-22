@@ -14,6 +14,9 @@ const BEGIN_LIST = "[[";
 const END_LIST = "]]";
 
 
+/*********************************************
+ * Get file from server
+ *********************************************/
 function getHtmlFile(url){
     let template = "";
     fetch(url).then(function(response) {
@@ -26,8 +29,14 @@ function getHtmlFile(url){
     return template;
 }
 
+/*********************************************
+ * This function aims at building the object 
+ * to be filled with the proper values
+ *********************************************/
 function analyzeTemplate(template){
-    
+    let data = template.toString().split(/(?:\r\n|\r|\n)/g);
+    console.log("Analyzing template");
+    console.log(data.length);
 
 }
 
@@ -35,7 +44,16 @@ function analyzeTemplate(template){
 class Template {
     addTemplate(id, url){
         this.template = getHtmlFile(url);
+        analyzeTemplate(this.template);
         
     }
 }
+
+function testTemplate(){
+    let temp = new Template();
+    temp.addTemplate(12, "npcomponent.html");
+}
+
+testTemplate();
+
 

@@ -12,11 +12,13 @@ const DEFAULT_SHADOW = "<p>Nothing</p>";
 const REFRESH_EVENT = "_refresh";
 
 
+
+// EventBus has moved in a reusable file
 /*-------------------------------------------------------
  * This class is the basic event manager that enables web
  * components to communicate together.
  *-------------------------------------------------------*/
-class EventBus {
+/*class EventBus {
     constructor() {
         this._bus = document.createElement('div');
     }
@@ -35,7 +37,7 @@ class EventBus {
 }
 
 // BUS will be the web components event manager
-const BUS = new EventBus();
+const BUS = new EventBus();*/
 
 
 /*-------------------------------------------------------
