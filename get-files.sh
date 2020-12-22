@@ -13,7 +13,7 @@ git checkout master -- styles.css
 git checkout master -- db.js
 git checkout master -- eventbus.js
 git checkout master -- templates/npccomponent.htpl
-git checkout master -- templateengine.js
+git checkout master -- templatengine.js
 
 git status
 
