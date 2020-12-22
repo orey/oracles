@@ -51,7 +51,7 @@ class Template {
 
 function testTemplate(){
     let temp = new Template();
-    temp.addTemplate(12, "npcomponent.html");
+    temp.addTemplate(12, "templates/npccomponent.htpl");
 }
 
 testTemplate();
