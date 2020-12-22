@@ -17,7 +17,7 @@ git checkout master -- templatengine.js
 
 git status
 
-add *
+git add *
 
 git commit -a -m "new version"
 
