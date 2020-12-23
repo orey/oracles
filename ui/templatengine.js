@@ -17,8 +17,10 @@ const END_LIST = "]]";
 /*********************************************
  * Get file from server
  *********************************************/
-function getHtmlFile(url){
-    return fetch(url)
+/*function getHtmlFile(url){
+    let lines = [];
+    // Fetch is a promise
+    fetch(url)
         .then( response => {
             if (!response.ok)
                 throw new Error('Network response was not ok :(');
@@ -27,8 +29,12 @@ function getHtmlFile(url){
         })
         .catch( err => {  
             console.log('Error: Failed to fetch page: ', err);  
+        })
+        .then( templatetext => {
+            lines = templatetext.toString().split(/(?:\r\n|\r|\n)/g);
         });
-}
+    return lines;
+}*/
 
 /*void async function () {
     //get the imported document in templates:
@@ -46,7 +52,7 @@ function getHtmlFile(url){
  * This function aims at building the object 
  * to be filled with the proper values
  *********************************************/
-function analyzeTemplate(template){
+/*function analyzeTemplate(template){
     let data = template.toString().split(/(?:\r\n|\r|\n)/g);
     console.log("Analyzing template");
     console.log(data.length);
@@ -70,9 +76,25 @@ function testTemplate(){
             let data = template.toString().split(/(?:\r\n|\r|\n)/g);
             console.log("Analyzing template");
             console.log(data.length);
-        });
+            });
 }
 
-testTemplate();
+testTemplate();*/
 
+const BROWSER = 0;
+let worker = new Worker('ui/template-worker.js');
+
+// Event called by the button
+function getTemplate(){
+    worker.postMessage([BROWSER, 'npccomponent.htpl']);
+};
+
+worker.onmessage = function(e) {
+    console.log("Event received from Worker: " + JSON.stringify(e));
+    setTemplate(e.data);
+};
+
+function setTemplate(text){
+    document.getElementById('template').innerHTML = text;
+}
 
