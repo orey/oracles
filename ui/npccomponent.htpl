@@ -18,18 +18,18 @@
 }
 </style>
 
-<h3>Nom: {{NPC_NAME}}</h3>
+<h3>Nom: ||NPC_NAME||</h3>
 <div class="row">
   <div class="column">
     <table>
       <tr><th>Caractéristiques</th> <th>Valeur</th></tr>
-      [[NPC_TAB1[[<tr><td>{{VAL1}}</td><td>{{VAL2}}</td></tr>]]NPC_TAB1]]
+      @@NPC_TAB1@@<tr><td>||VAL1||</td><td>||VAL2||</td></tr>@@NPC_TAB1@@
     </table>
   </div>
   <div class="column">
     <table>
       <tr><th>Caractéristiques</th> <th>Valeur</th></tr>
-      [[NPC_TAB2[[<tr><td>{{VAL3}}</td><td>{{VAL3}}</td></tr>]]NPC_TAB2]]
+      @@NPC_TAB2@@<tr><td>||VAL3||</td><td>||VAL3||</td></tr>@@NPC_TAB2@@
     </table>
   </div>
 </div>
