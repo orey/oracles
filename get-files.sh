@@ -1,7 +1,7 @@
 #!/bin/sh
 
 git checkout master -- index.html
-git checkout master -- webworketl.html
+git checkout master -- webworker.html
 git checkout master -- oracles.js
 git checkout master -- npccomponent.js
 git checkout master -- rpg/oracles-engine.js
