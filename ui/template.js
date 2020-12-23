@@ -9,9 +9,16 @@
  *******************************************/
 "use strict";
 
-const BALISE = "||";
-const LIST = "@@";
+const SINGLE_BEGIN = "{{";
+const SINGLE_END   = "}}";
+const MULTIPLE_TAG_BEGIN = "[[";
+const MULTIPLE_TAG_END   = "||";
+const MULTIPLE_END       = "]]";
+
 const INIT = "DEFAULT";
+
+const SINGLE = "SINGLE";
+const MULTIPLE = "MULTIPLE";
 
 
 /********************************************
@@ -21,19 +28,80 @@ function isEven(n){
     return (n % 2 == 0) ? true : false;
 }
 
+function nextGrammarItem(s, verbose = false){
+    if (verbose)
+        console.log(s);
+    let sb  = s.indexOf(SINGLE_BEGIN),
+        mtb = s.indexOf(MULTIPLE_TAG_BEGIN);
+
+    // Nothing left to find
+    if ((sb == mtb) && (sb == -1))
+        return -1;
+    // The first one is a single
+    else if (((mtb == -1) && (sb != -1)) || (sb < mtb)) {
+        let se = s.indexOf(SINGLE_END);
+        return {type: SINGLE,
+                before: s.slice(0, sb),
+                tag:    s.slice(sb + SINGLE_BEGIN.length, se),
+                after:  s.slice(se + SINGLE_END.length) };
+    }
+    else if (((sb == -1) && (mtb != -1)) || (mtb < sb)) {
+        // First tag
+        let mte = s.indexOf(MULTIPLE_TAG_END);
+        // Second tag
+        let me = s.indexOf(MULTIPLE_END);
+        return {type: MULTIPLE,
+                before: s.slice(0,mtb),
+                tag:    s.slice(mtb + MULTIPLE_TAG_BEGIN.length, mte),
+                middle: s.slice(mte + MULTIPLE_TAG_END.length, me),
+                after:  s.slice(me  + MULTIPLE_END.length) };
+    }
+    else
+        throw new Error("This case should not happen. sb=" + String(sb)
+                        + ", mtb=" + String(mtb));
+}
+
+
+class Single {
+    constructor(name){
+        this.type = SINGLE;
+        this.name = name;
+    }
+}
+
+class Multiple {
+    constructor(name){
+        this.type = MULTIPLE;
+        this.name = name;
+        this.content = [];
+    }
+
+    // Obj should be Singles but could be Multiples
+    addObject(obj){
+        this.content.push(obj);
+    }
+}
+
+
+
 
 /********************************************
  * Class template
  *******************************************/
-class Template{
+/*class Template{
     constructor(name, text){
-        this.obj = {};
+        // Grammar is an object with individual members or members that are arrays
+        this.grammar = {};
         this.name = name;
         this.lines = text.split(/(?:\r\n|\r|\n)/g);
     }
 
-    // Main parsing function
-    parseTemplate(){
+
+    
+
+    
+
+   parseTemplate(){
         for (let l of this.lines){
             let elems = l.split(LIST),
                 nb = elems.length;
@@ -44,7 +112,7 @@ class Template{
                     continue;
                 else
                     for (let b of balises)
-                        this.obj[b] = INIT;
+                        this.grammar[b] = b;
                 continue;
             }
             // Expected syntax
@@ -57,20 +125,20 @@ class Template{
                 throw new Error("Unexpected list syntax. Start is: " + start
                                 + ", and end is: " + end);
             // The index 3 should contain balises
-            let balises = this.getBalises(elems[2], true);
-            this.obj[start] = balises;
+            let balises = this.getBalises(elems[2]);
+            this.grammar.push(balises); // Array in the array
         }
     }
 
     // Log the content of the template object
     log(){
-        console.log("Template name: " + this.name + "\n" + JSON.stringify(this.obj));
+        console.log("Template name: " + this.name + "\n" + JSON.stringify(this.grammar));
         
     }
 
     // Returns balises under the form of an array (by default)
     // or under the form of an object (to be embedded into a list
-    getBalises(l, object=false){
+    getBalises(l){
         let segs = l.split(BALISE),
             nb = segs.length;
         if (nb == 1)
@@ -80,21 +148,13 @@ class Template{
             throw new Error("Syntax error in template. Line << " + l
                             + " >> contains an odd number of " + BALISE);
         let balises = [];
-        let balises_obj = {};
         for (let i = 0; i<nb; i++){
             if (isEven(i))
                 continue;
-            else {
-                if (object)
-                    balises_obj[segs[i]] = INIT;
-                else
-                    balises.push(segs[i]);
-            }
+            else
+                balises.push(segs[i]);
         }
-        if (object)
-            return balises_obj;
-        else
-            return balises;
+        return balises;
     }
 }
 
@@ -105,7 +165,8 @@ class Template{
  *****************************************************/
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
-        Template,
+        //Template,
+        nextGrammarItem,
     }
 }
 
