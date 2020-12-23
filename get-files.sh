@@ -1,19 +1,19 @@
 #!/bin/sh
 
 git checkout master -- index.html
-git checkout master -- index-local.html
+git checkout master -- webworketl.html
 git checkout master -- oracles.js
 git checkout master -- npccomponent.js
-git checkout master -- js/oracles-engine.js
-git checkout master -- js/names.js
-git checkout master -- js/harrypotter.js
-git checkout master -- names.json
+git checkout master -- rpg/oracles-engine.js
+git checkout master -- rpg/names.js
+git checkout master -- rpg/harrypotter.js
 git checkout master -- favicon.ico
 git checkout master -- styles.css
-git checkout master -- db.js
-git checkout master -- eventbus.js
-git checkout master -- templates/npccomponent.htpl
-git checkout master -- templatengine.js
+git checkout master -- db/db.js
+git checkout master -- ui/eventbus.js
+git checkout master -- ui/npccomponent.htpl
+git checkout master -- ui/templatengine.js
+git checkout master -- ui/template-worker.js
 
 git status
 

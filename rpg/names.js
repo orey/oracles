@@ -1,0 +1,203 @@
+/**********************************************
+ * Oracles for JDR - Reusable lists
+ * Author: rey.olivier@gmail.com
+ * Licence: GNU GPL v3
+ * Date: October 2020 
+ * Data File
+ ***********************************************/
+"use strict";
+
+/*--------------------------------------
+ * First names
+ *--------------------------------------*/
+const FirstMaleNames = {pattern: "1D20",
+                        values:  [
+                            "Alexander",
+                            "Charles",
+                            "Connor",
+                            "Damian",
+                            "George",
+                            "Jack",
+                            "James",
+                            "Joe",
+                            "John",
+                            "Kyle",
+                            "Michael",
+                            "Oliver",
+                            "Oscar",
+                            "Paul",
+                            "Peter",
+                            "Reece",
+                            "Richard",
+                            "Robert",
+                            "Thomas",
+                            "William"
+                        ]};
+
+const FirstFemaleNames ={ pattern: "1D20",
+                          values:  [
+                              "Amelia",
+                              "Bethany",
+                              "Charlotte",
+                              "Elizabeth",
+                              "Emily",
+                              "Emma",
+                              "Jennifer",
+                              "Jessica",
+                              "Joanne",
+                              "Lauren",
+                              "Linda",
+                              "Madison",
+                              "Margaret",
+                              "Megan",
+                              "Olivia",
+                              "Patricia",
+                              "Sophie",
+                              "Susan",
+                              "Tracy",
+                              "Victoria"
+                          ]};
+
+/*--------------------------------------
+ * Last names
+ *--------------------------------------*/
+const FamilyNames = { pattern: "1D20",
+                      values:  [
+                          "Anderson",
+                          "Brown",
+                          "Byrne",
+                          "Davies",
+                          "Evans",
+                          "Johnson",
+                          "Jones",
+                          "Martin",
+                          "Morton",
+                          "Miller",
+                          "Murphy",
+                          "O'Brien",
+                          "O'Kelly",
+                          "O'Ryan",
+                          "O'Sullivan",
+                          "Smith",
+                          "Taylor",
+                          "Walsh",
+                          "Wang",
+                          "Wilson"
+                      ]};
+
+const LongFamilyNames = { pattern: "1D100",
+                      values:  [
+                          "Smith",
+                          "Johnson",
+                          "Williams",
+                          "Jones",
+                          "Brown",
+                          "Davis",
+                          "Miller",
+                          "Wilson",
+                          "Moore",
+                          "Taylor",
+                          "Anderson",
+                          "Thomas",
+                          "Jackson",
+                          "White",
+                          "Harris",
+                          "Martin",
+                          "Thompson",
+                          "Garcia",
+                          "Martinez",
+                          "Robinson",
+                          "Clark",
+                          "Rodriguez",
+                          "Lewis",
+                          "Lee",
+                          "Walker",
+                          "Hall",
+                          "Allen",
+                          "Young",
+                          "Hernandez",
+                          "King",
+                          "Wright",
+                          "Lopez",
+                          "Hill",
+                          "Scott",
+                          "Green",
+                          "Adams",
+                          "Baker",
+                          "Gonzalez",
+                          "Nelson",
+                          "Carter",
+                          "Mitchell",
+                          "Perez",
+                          "Roberts",
+                          "Turner",
+                          "Phillips",
+                          "Campbell",
+                          "Parker",
+                          "Evans",
+                          "Edwards",
+                          "Collins",
+                          "Stewart",
+                          "Sanchez",
+                          "Morris",
+                          "Rogers",
+                          "Reed",
+                          "Cook",
+                          "Morgan",
+                          "Bell",
+                          "Murphy",
+                          "Bailey",
+                          "Rivera",
+                          "Cooper",
+                          "Richardson",
+                          "Cox",
+                          "Howard",
+                          "Ward",
+                          "Torres",
+                          "Peterson",
+                          "Gray",
+                          "Ramirez",
+                          "James",
+                          "Watson",
+                          "Brooks",
+                          "Kelly",
+                          "Sanders",
+                          "Price",
+                          "Bennett",
+                          "Wood",
+                          "Barnes",
+                          "Ross",
+                          "Henderson",
+                          "Coleman",
+                          "Jenkins",
+                          "Perry",
+                          "Powell",
+                          "Long",
+                          "Patterson",
+                          "Hughes",
+                          "Flores",
+                          "Washington",
+                          "Butler",
+                          "Simmons",
+                          "Foster",
+                          "Gonzales",
+                          "Bryant",
+                          "Alexander",
+                          "Russell",
+                          "Griffin",
+                          "Diaz",
+                          "Hayes"
+                      ]};
+
+/*--------------------------------------
+ * Exports
+ *--------------------------------------*/
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+        FirstMaleNames,
+        FirstFemaleNames,
+        FamilyNames,
+        LongFamilyNames,
+    }
+}
+
