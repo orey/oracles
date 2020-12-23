@@ -14,10 +14,17 @@ const LIST = "@@";
 const INIT = "DEFAULT";
 
 
+/********************************************
+ * Tools
+ *******************************************/
 function isEven(n){
     return (n % 2 == 0) ? true : false;
 }
 
+
+/********************************************
+ * Class template
+ *******************************************/
 class Template{
     constructor(name, text){
         this.obj = {};
@@ -25,6 +32,7 @@ class Template{
         this.lines = text.split(/(?:\r\n|\r|\n)/g);
     }
 
+    // Main parsing function
     parseTemplate(){
         for (let l of this.lines){
             let elems = l.split(LIST),
@@ -54,8 +62,10 @@ class Template{
         }
     }
 
+    // Log the content of the template object
     log(){
-        console.log("Template name: " + this.name + "\n" + JSON.stringify(this));
+        console.log("Template name: " + this.name + "\n" + JSON.stringify(this.obj));
+        
     }
 
     // Returns balises under the form of an array (by default)

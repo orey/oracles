@@ -29,7 +29,7 @@
   <div class="column">
     <table>
       <tr><th>Caractéristiques</th> <th>Valeur</th></tr>
-      @@NPC_TAB2@@<tr><td>||VAL3||</td><td>||VAL3||</td></tr>@@NPC_TAB2@@
+      @@NPC_TAB2@@<tr><td>||VAL3||</td><td>||VAL4||</td></tr>@@NPC_TAB2@@
     </table>
   </div>
 </div>
