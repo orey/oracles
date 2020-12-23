@@ -32,7 +32,7 @@ function getRemoteTemplate(templatename){
         if(this.readyState === XMLHttpRequest.DONE){
             if(this.status === 200){
                 // send template back to the caller
-                postMessage(this.responseText());
+                postMessage(this.responseText);
             }
         }
     };
