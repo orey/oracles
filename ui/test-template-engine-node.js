@@ -3,7 +3,7 @@
 const tpl = require('./template.js');
 const fs = require('fs');
 
-function testNextGammarItem(){
+function testNextGammarItem1(){
     console.log("------------------------------------");
     console.log("Test nextGrammarItem start");
     let acc = [];
@@ -27,15 +27,22 @@ function testNextGammarItem(){
 }
 
 
+function testNextGrammarItem2(text, data){
+    console.log("------------------------------------");
+    console.log("Test nextGrammarItem 2 start");
+    let acc = [];
+    tpl.nextGrammarItem(acc, text, true);
+    console.log(acc);
+    tpl.generateFragment(acc, data, true);
+    console.log("Test nextGrammarItem 2 end");
+    console.log("------------------------------------");
+}
+
 function tests(){
     try {
-        // read contents of the file
-        const data = fs.readFileSync('npccomponent.htpl', 'UTF-8');
-        console.log(data);
-        /*let temp = new tpl.Template("npccomponent.htpl", data);
-          temp.parseTemplate();
-          temp.log();*/
-        
+        // First test
+        testNextGammarItem1();
+
         let johnny = {NPC_NAME : "Johnny Be Good",
                       NPC_TAB1 : [ { VAL1 : "Force", VAL2 : 1000 },
                                    { VAL1 : "Age", VAL2 : 35 },
@@ -47,8 +54,12 @@ function tests(){
                                    { VAL3 : "Vaisseau", VAL4 : "Brakano 2 militarisé" },
                                    { VAL3 : "Attaques", VAL4 : "Bras robot" } ] };
 
-        testNextGammarItem();
-        
+        // Second test
+        // Read contents of the file
+        const data = fs.readFileSync('npccomponent.htpl', 'UTF-8');
+        console.log(data);
+        testNextGrammarItem2(data, johnny);
+
     }
     catch (err) {
         console.error(err);

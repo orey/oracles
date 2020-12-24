@@ -75,6 +75,66 @@ function nextGrammarItem(acc, s, verbose = false){
 }
 
 
+function generateTextFromSingle(grammar, data) {
+    // gammar is an object of the form: {type: ..., before: ..., tag: ...}
+    // data is an object with a field named {... tag: ...}
+    if ((grammar.type == SINGLE)
+        && (data[grammar.tag] != undefined)
+        && (data.hasOwnProperty(grammar.tag)))
+        return grammar.before + data[grammar.tag];
+    else {
+        console.log("WARNING: Strange case. Grammar: " + JSON.stringify(grammar)
+                    + "\nData: " + JSON.stringify(data));
+        return "";
+        
+    }
+}
+
+function generateTextFromMultiple(grammar, data) {
+    // gammar is an object of the form: {type: ..., before: ..., tag: ..., middle: list of objects}
+    // data is an object with a field named {... tag: ...}
+    if ((grammar.type == MULTIPLE)
+        && (data[grammar.tag] != undefined)
+        && (data.hasOwnProperty(grammar.tag))) {
+        // The multiple tag is just a container, we have to find the list inside
+        let acc = grammar.before;
+        let subgrammar = grammar.middle;
+        let valuelist = data[grammar.tag];
+    }
+        
+        
+        return grammar.before + data[grammar.tag];
+    else {
+        console.log("WARNING: Strange case. Grammar: " + JSON.stringify(grammar)
+                    + "\nData: " + JSON.stringify(data));
+        return "";
+        
+    }
+}
+
+
+function generateFragment(grammar, data, verbose=false) {
+    let acc = "";
+    for (let e of grammar){
+        switch (e.type) {
+            //single
+        case SINGLE:
+            if (verbose)
+                console.log(data[e.tag]);
+            
+            break;
+            //multiple
+        case MULTIPLE:
+            break;
+        default:
+            break;
+        }
+    }
+    
+}
+
+
+
 /*function parseTemplate(templatestring, verbose=false){
     let cont = true;
     let acc  = [];
@@ -176,6 +236,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         //Template,
         nextGrammarItem,
+        generateFragment,
         //parseTemplate,
     }
 }
