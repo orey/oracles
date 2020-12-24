@@ -17,8 +17,9 @@ const MULTIPLE_END       = "]]";
 
 const INIT = "DEFAULT";
 
-const SINGLE = "SINGLE";
+const SINGLE   = "SINGLE";
 const MULTIPLE = "MULTIPLE";
+const TEXT     = "TEXT";
 
 
 /********************************************
@@ -28,33 +29,45 @@ function isEven(n){
     return (n % 2 == 0) ? true : false;
 }
 
-function nextGrammarItem(s, verbose = false){
+function nextGrammarItem(acc, s, verbose = false){
     if (verbose)
         console.log(s);
     let sb  = s.indexOf(SINGLE_BEGIN),
         mtb = s.indexOf(MULTIPLE_TAG_BEGIN);
 
     // Nothing left to find
-    if ((sb == mtb) && (sb == -1))
+    if ((sb == mtb) && (sb == -1)) {
+        acc.push( { type: TEXT,
+                    value: s
+                  });
         return -1;
+    }
     // The first one is a single
     else if (((mtb == -1) && (sb != -1)) || (sb < mtb)) {
         let se = s.indexOf(SINGLE_END);
-        return {type: SINGLE,
-                before: s.slice(0, sb),
-                tag:    s.slice(sb + SINGLE_BEGIN.length, se),
-                after:  s.slice(se + SINGLE_END.length) };
+        acc.push({ type:   SINGLE,
+                   before: s.slice(0, sb),
+                   tag:    s.slice(sb + SINGLE_BEGIN.length, se)
+                 });
+        let res = nextGrammarItem(acc, s.slice(se + SINGLE_END.length) );
+        if (res == -1)
+            return;
     }
     else if (((sb == -1) && (mtb != -1)) || (mtb < sb)) {
         // First tag
         let mte = s.indexOf(MULTIPLE_TAG_END);
         // Second tag
         let me = s.indexOf(MULTIPLE_END);
-        return {type: MULTIPLE,
-                before: s.slice(0,mtb),
-                tag:    s.slice(mtb + MULTIPLE_TAG_BEGIN.length, mte),
-                middle: s.slice(mte + MULTIPLE_TAG_END.length, me),
-                after:  s.slice(me  + MULTIPLE_END.length) };
+        let acc2 = [];
+        nextGrammarItem(acc2, s.slice(mte + MULTIPLE_TAG_END.length, me));
+        acc.push( { type: MULTIPLE,
+                    before: s.slice(0,mtb),
+                    tag:    s.slice(mtb + MULTIPLE_TAG_BEGIN.length, mte),
+                    middle: acc2
+                  } );
+        let res = nextGrammarItem(acc, s.slice(me  + MULTIPLE_END.length) );
+        if (res == -1)
+            return;
     }
     else
         throw new Error("This case should not happen. sb=" + String(sb)
@@ -62,27 +75,28 @@ function nextGrammarItem(s, verbose = false){
 }
 
 
-class Single {
-    constructor(name){
-        this.type = SINGLE;
-        this.name = name;
+/*function parseTemplate(templatestring, verbose=false){
+    let cont = true;
+    let acc  = [];
+    while (cont){
+        // obj is an array of 1 object + 1 string
+        let obj, rest;
+        [obj, more] = nextGrammarItem(templatestring, verbose);
+        if (obj == undefined){
+            if (verbose)
+                console.log("We reached the end of the template.");
+            break;
+        }
+        if (obj.type == SINGLE){
+            acc.push(obj);
+            let obj2, rest2;
+            
+            
+        
+        }
     }
-}
-
-class Multiple {
-    constructor(name){
-        this.type = MULTIPLE;
-        this.name = name;
-        this.content = [];
-    }
-
-    // Obj should be Singles but could be Multiples
-    addObject(obj){
-        this.content.push(obj);
-    }
-}
-
-
+    return acc;
+}*/
 
 
 /********************************************
@@ -95,11 +109,6 @@ class Multiple {
         this.name = name;
         this.lines = text.split(/(?:\r\n|\r|\n)/g);
     }
-
-
-    
-
-    
 
    parseTemplate(){
         for (let l of this.lines){
@@ -167,6 +176,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         //Template,
         nextGrammarItem,
+        //parseTemplate,
     }
 }
 
