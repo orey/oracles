@@ -29,7 +29,11 @@ function isEven(n){
     return (n % 2 == 0) ? true : false;
 }
 
-function nextGrammarItem(acc, s, verbose = false){
+/********************************************
+ * Recursive function with accumulator
+ * to get the grammar from the template file
+ *******************************************/
+function createGrammar(acc, s, verbose = false){
     if (verbose)
         console.log(s);
     let sb  = s.indexOf(SINGLE_BEGIN),
@@ -49,7 +53,7 @@ function nextGrammarItem(acc, s, verbose = false){
                    before: s.slice(0, sb),
                    tag:    s.slice(sb + SINGLE_BEGIN.length, se)
                  });
-        let res = nextGrammarItem(acc, s.slice(se + SINGLE_END.length) );
+        let res = createGrammar(acc, s.slice(se + SINGLE_END.length) );
         if (res == -1)
             return;
     }
@@ -59,13 +63,13 @@ function nextGrammarItem(acc, s, verbose = false){
         // Second tag
         let me = s.indexOf(MULTIPLE_END);
         let acc2 = [];
-        nextGrammarItem(acc2, s.slice(mte + MULTIPLE_TAG_END.length, me));
+        createGrammar(acc2, s.slice(mte + MULTIPLE_TAG_END.length, me));
         acc.push( { type: MULTIPLE,
                     before: s.slice(0,mtb),
                     tag:    s.slice(mtb + MULTIPLE_TAG_BEGIN.length, mte),
                     middle: acc2
                   } );
-        let res = nextGrammarItem(acc, s.slice(me  + MULTIPLE_END.length) );
+        let res = createGrammar(acc, s.slice(me  + MULTIPLE_END.length) );
         if (res == -1)
             return;
     }
@@ -75,158 +79,46 @@ function nextGrammarItem(acc, s, verbose = false){
 }
 
 
-function generateTextFromSingle(grammar, data) {
-    // gammar is an object of the form: {type: ..., before: ..., tag: ...}
-    // data is an object with a field named {... tag: ...}
-    if ((grammar.type == SINGLE)
-        && (data[grammar.tag] != undefined)
-        && (data.hasOwnProperty(grammar.tag)))
-        return grammar.before + data[grammar.tag];
-    else {
-        console.log("WARNING: Strange case. Grammar: " + JSON.stringify(grammar)
-                    + "\nData: " + JSON.stringify(data));
-        return "";
-        
-    }
-}
-
-function generateTextFromMultiple(grammar, data) {
-    // gammar is an object of the form: {type: ..., before: ..., tag: ..., middle: list of objects}
-    // data is an object with a field named {... tag: ...}
-    if ((grammar.type == MULTIPLE)
-        && (data[grammar.tag] != undefined)
-        && (data.hasOwnProperty(grammar.tag))) {
-        // The multiple tag is just a container, we have to find the list inside
-        let acc = grammar.before;
-        let subgrammar = grammar.middle;
-        let valuelist = data[grammar.tag];
-    }
-        
-        
-        return grammar.before + data[grammar.tag];
-    else {
-        console.log("WARNING: Strange case. Grammar: " + JSON.stringify(grammar)
-                    + "\nData: " + JSON.stringify(data));
-        return "";
-        
-    }
-}
-
-
-function generateFragment(grammar, data, verbose=false) {
-    let acc = "";
-    for (let e of grammar){
-        switch (e.type) {
-            //single
-        case SINGLE:
-            if (verbose)
-                console.log(data[e.tag]);
-            
-            break;
-            //multiple
-        case MULTIPLE:
-            break;
-        default:
-            break;
-        }
-    }
-    
-}
-
-
-
-/*function parseTemplate(templatestring, verbose=false){
-    let cont = true;
-    let acc  = [];
-    while (cont){
-        // obj is an array of 1 object + 1 string
-        let obj, rest;
-        [obj, more] = nextGrammarItem(templatestring, verbose);
-        if (obj == undefined){
-            if (verbose)
-                console.log("We reached the end of the template.");
-            break;
-        }
-        if (obj.type == SINGLE){
-            acc.push(obj);
-            let obj2, rest2;
-            
-            
-        
-        }
-    }
-    return acc;
-}*/
-
+// Start Attempt same struct as parsing grammar
 
 /********************************************
- * Class template
+ * Recursive function with accumulator
+ * fill the template with the real values
  *******************************************/
-/*class Template{
-    constructor(name, text){
-        // Grammar is an object with individual members or members that are arrays
-        this.grammar = {};
-        this.name = name;
-        this.lines = text.split(/(?:\r\n|\r|\n)/g);
-    }
-
-   parseTemplate(){
-        for (let l of this.lines){
-            let elems = l.split(LIST),
-                nb = elems.length;
-            // There is no list
-            if (nb == 1){
-                let balises = this.getBalises(l);
-                if (balises == 0)
-                    continue;
-                else
-                    for (let b of balises)
-                        this.grammar[b] = b;
-                continue;
-            }
-            // Expected syntax
-            // ---@@LIST@@----------@@LIST@@---
-            //  0    1       2         3     4
-            if (nb != 5)
-                throw new Error("Unexpected list syntax in line: " + l);
-            let start = elems[1], end = elems[3];
-            if (start != end)
-                throw new Error("Unexpected list syntax. Start is: " + start
-                                + ", and end is: " + end);
-            // The index 3 should contain balises
-            let balises = this.getBalises(elems[2]);
-            this.grammar.push(balises); // Array in the array
+function fillTemplate(acc, grammar, data, verbose = false){
+    // gammar is an array of objects of the form:
+    // SINGLE:   {type: ..., before: ..., tag: ...} 
+    // MULTIPLE: {type: ..., before: ..., tag: ..., middle: subgrammar}
+    // TEXT:     {type: ..., value: ...}
+    // Data is an object with an object with fields {... TAG: "value" ...}
+    console.log(grammar);
+    for (let e of grammar){
+        if (!e.hasOwnProperty("type")){
+            throw new Error("Element in grammar does not have a type field. e=" + JSON.stringify(e));
         }
-    }
-
-    // Log the content of the template object
-    log(){
-        console.log("Template name: " + this.name + "\n" + JSON.stringify(this.grammar));
-        
-    }
-
-    // Returns balises under the form of an array (by default)
-    // or under the form of an object (to be embedded into a list
-    getBalises(l){
-        let segs = l.split(BALISE),
-            nb = segs.length;
-        if (nb == 1)
-            // There is no balise in this line
-            return 0;
-        if (isEven(nb))
-            throw new Error("Syntax error in template. Line << " + l
-                            + " >> contains an odd number of " + BALISE);
-        let balises = [];
-        for (let i = 0; i<nb; i++){
-            if (isEven(i))
-                continue;
-            else
-                balises.push(segs[i]);
+        switch (e.type){
+        case SINGLE:
+            // e is an object with three fields: type, before and tag
+            // As the function is recursive, the data should always be at the same level
+            // than the grammar.
+            acc += e.before + data[e.tag];
+            break;
+        case MULTIPLE:
+            //We have multiple lines to deal with in data[e.tag]
+            let content = data[e.tag]; // content is an array of line
+            if (verbose)
+                console.log("Number of lines: " + content.length);
+            for (let line of content)
+                fillTemplate(acc, e.middle, line);
+            break;
+        case TEXT:
+            acc += e.value;
+            break;
+        default:
+            throw new Error("This case should not happen. e.type=" + String(e.type));
         }
-        return balises;
     }
 }
-
 
 /*****************************************************
  * For test in node
@@ -234,10 +126,8 @@ function generateFragment(grammar, data, verbose=false) {
  *****************************************************/
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
-        //Template,
-        nextGrammarItem,
-        generateFragment,
-        //parseTemplate,
+        createGrammar,
+        fillTemplate,
     }
 }
 
