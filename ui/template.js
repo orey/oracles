@@ -85,7 +85,8 @@ function createGrammar(acc, s, verbose = false){
  * Recursive function with accumulator
  * fill the template with the real values
  *******************************************/
-function fillTemplate(acc, grammar, data, verbose = false){
+function fillTemplate(grammar, data, verbose = false){
+    let acc = "";
     // gammar is an array of objects of the form:
     // SINGLE:   {type: ..., before: ..., tag: ...} 
     // MULTIPLE: {type: ..., before: ..., tag: ..., middle: subgrammar}
@@ -98,26 +99,30 @@ function fillTemplate(acc, grammar, data, verbose = false){
         }
         switch (e.type){
         case SINGLE:
+            console.log("===========================================> SINGLE");
             // e is an object with three fields: type, before and tag
             // As the function is recursive, the data should always be at the same level
             // than the grammar.
             acc += e.before + data[e.tag];
             break;
         case MULTIPLE:
+            console.log("===========================================> MULTIPLE");
+            acc += e.before;
             //We have multiple lines to deal with in data[e.tag]
-            let content = data[e.tag]; // content is an array of line
-            if (verbose)
-                console.log("Number of lines: " + content.length);
-            for (let line of content)
-                fillTemplate(acc, e.middle, line);
+            let content = data[e.tag]; // content is an array of objects
+            for (let line of content){
+                acc +=  fillTemplate(e.middle, line, verbose);
+            }
             break;
         case TEXT:
+            console.log("===========================================> TEXT");
             acc += e.value;
             break;
         default:
             throw new Error("This case should not happen. e.type=" + String(e.type));
         }
     }
+    return acc;
 }
 
 /*****************************************************

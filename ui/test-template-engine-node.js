@@ -59,7 +59,7 @@ function testFillTemplate(){
     
     // Filling the template
     let acc = "";
-    tpl.fillTemplate(acc, grammar, johnny, true);
+    acc = tpl.fillTemplate(grammar, johnny, true);
     console.log("Instantiated template:");
     console.log(acc);
 
@@ -95,7 +95,7 @@ class Test{
         }
         this.stopDate = new Date();
         console.log("Test performed in "
-                    + String(this.stopDate - this.startDate)
+                    + String((this.stopDate - this.startDate)/1000)
                     + " seconds");
         console.log("Test ended for "+ this.f.name);
         console.log("------------------------------------");
